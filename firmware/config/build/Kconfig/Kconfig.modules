@@ -1,0 +1,18 @@
+menu "hal_nordic (/Users/vallyashov/study/keebs/zmk/modules/hal/nordic)"
+osource "$(ZEPHYR_HAL_NORDIC_KCONFIG)"
+config ZEPHYR_HAL_NORDIC_MODULE
+	bool
+	default y
+endmenu
+menu "sof (/Users/vallyashov/study/keebs/zmk/modules/audio/sof)"
+osource "/Users/vallyashov/study/keebs/zmk/modules/audio/sof/zephyr/Kconfig"
+config ZEPHYR_SOF_MODULE
+	bool
+	default y
+endmenu
+menu "drivers (/Users/vallyashov/study/keebs/zmk/app/drivers)"
+osource "/Users/vallyashov/study/keebs/zmk/app/drivers/Kconfig"
+config ZEPHYR_DRIVERS_MODULE
+	bool
+	default y
+endmenu

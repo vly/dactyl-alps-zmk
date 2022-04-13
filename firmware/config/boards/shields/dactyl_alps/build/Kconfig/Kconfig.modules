@@ -1,0 +1,72 @@
+menu "CANopenNode (/Users/vallyashov/study/keebs/zmk/modules/lib/canopennode)"
+osource "$(ZEPHYR_CANOPENNODE_KCONFIG)"
+config ZEPHYR_CANOPENNODE_MODULE
+	bool
+	default y
+endmenu
+menu "hal_gigadevice (/Users/vallyashov/study/keebs/zmk/modules/hal/gigadevice)"
+osource "$(ZEPHYR_HAL_GIGADEVICE_KCONFIG)"
+config ZEPHYR_HAL_GIGADEVICE_MODULE
+	bool
+	default y
+endmenu
+menu "hal_nordic (/Users/vallyashov/study/keebs/zmk/modules/hal/nordic)"
+osource "$(ZEPHYR_HAL_NORDIC_KCONFIG)"
+config ZEPHYR_HAL_NORDIC_MODULE
+	bool
+	default y
+endmenu
+menu "hal_rpi_pico (/Users/vallyashov/study/keebs/zmk/modules/hal/rpi_pico)"
+osource "$(ZEPHYR_HAL_RPI_PICO_KCONFIG)"
+config ZEPHYR_HAL_RPI_PICO_MODULE
+	bool
+	default y
+endmenu
+menu "lz4 (/Users/vallyashov/study/keebs/zmk/modules/lib/lz4)"
+osource "$(ZEPHYR_LZ4_KCONFIG)"
+config ZEPHYR_LZ4_MODULE
+	bool
+	default y
+endmenu
+menu "mbedtls (/Users/vallyashov/study/keebs/zmk/modules/crypto/mbedtls)"
+osource "$(ZEPHYR_MBEDTLS_KCONFIG)"
+config ZEPHYR_MBEDTLS_MODULE
+	bool
+	default y
+endmenu
+menu "nanopb (/Users/vallyashov/study/keebs/zmk/modules/lib/nanopb)"
+osource "$(ZEPHYR_NANOPB_KCONFIG)"
+config ZEPHYR_NANOPB_MODULE
+	bool
+	default y
+endmenu
+menu "sof (/Users/vallyashov/study/keebs/zmk/modules/audio/sof)"
+osource "/Users/vallyashov/study/keebs/zmk/modules/audio/sof/zephyr/Kconfig"
+config ZEPHYR_SOF_MODULE
+	bool
+	default y
+endmenu
+menu "tflite-micro (/Users/vallyashov/study/keebs/zmk/modules/lib/tflite-micro)"
+osource "$(ZEPHYR_TFLITE_MICRO_KCONFIG)"
+config ZEPHYR_TFLITE_MICRO_MODULE
+	bool
+	default y
+endmenu
+menu "TraceRecorder (/Users/vallyashov/study/keebs/zmk/modules/debug/TraceRecorder)"
+osource "/Users/vallyashov/study/keebs/zmk/modules/debug/TraceRecorder/kernelports/Zephyr/Kconfig"
+config ZEPHYR_TRACERECORDER_MODULE
+	bool
+	default y
+endmenu
+menu "zscilib (/Users/vallyashov/study/keebs/zmk/modules/lib/zscilib)"
+osource "/Users/vallyashov/study/keebs/zmk/modules/lib/zscilib/Kconfig.zscilib"
+config ZEPHYR_ZSCILIB_MODULE
+	bool
+	default y
+endmenu
+menu "drivers (/Users/vallyashov/study/keebs/zmk/app/drivers)"
+osource "/Users/vallyashov/study/keebs/zmk/app/drivers/Kconfig"
+config ZEPHYR_DRIVERS_MODULE
+	bool
+	default y
+endmenu

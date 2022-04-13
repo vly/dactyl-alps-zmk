@@ -1,0 +1,822 @@
+/dts-v1/;
+/ {
+ #address-cells = <1>;
+ #size-cells = <1>;
+ chosen { };
+ aliases { };
+};
+/ {
+ soc {
+  #address-cells = <1>;
+  #size-cells = <1>;
+  compatible = "simple-bus";
+  interrupt-parent = <&nvic>;
+  ranges;
+  nvic: interrupt-controller@e000e100 {
+   compatible = "arm,v7m-nvic";
+   reg = <0xe000e100 0xc00>;
+   interrupt-controller;
+   #interrupt-cells = <2>;
+  };
+  systick: timer@e000e010 {
+   compatible = "arm,armv7m-systick";
+   reg = <0xe000e010 0x10>;
+  };
+ };
+};
+&systick {
+ status = "disabled";
+};
+/ {
+ chosen {
+  zephyr,entropy = &rng;
+  zephyr,flash-controller = &flash_controller;
+ };
+ cpus {
+  #address-cells = <1>;
+  #size-cells = <0>;
+  cpu@0 {
+   device_type = "cpu";
+   compatible = "arm,cortex-m4f";
+   reg = <0>;
+  };
+ };
+ soc {
+  flash_controller: flash-controller@4001e000 {
+   compatible = "nordic,nrf52-flash-controller";
+   reg = <0x4001e000 0x1000>;
+   #address-cells = <1>;
+   #size-cells = <1>;
+   label="NRF_FLASH_DRV_NAME";
+   flash0: flash@0 {
+    compatible = "soc-nv-flash";
+    label = "NRF_FLASH";
+    erase-block-size = <4096>;
+    write-block-size = <4>;
+   };
+  };
+  sram0: memory@20000000 {
+   compatible = "mmio-sram";
+  };
+  adc: adc@40007000 {
+   compatible = "nordic,nrf-saadc";
+   reg = <0x40007000 0x1000>;
+   interrupts = <7 1>;
+   status = "disabled";
+   label = "ADC_0";
+   #io-channel-cells = <1>;
+  };
+  clock: clock@40000000 {
+   compatible = "nordic,nrf-clock";
+   reg = <0x40000000 0x1000>;
+   interrupts = <0 1>;
+   status = "okay";
+   label = "CLOCK";
+  };
+  ecb: ecb@4000e000 {
+   compatible = "nordic,nrf-ecb";
+   reg = <0x4000e000 0x1000>;
+   interrupts = <14 1>;
+   status = "okay";
+   label = "ECB";
+  };
+  uart0: uart@40002000 {
+   reg = <0x40002000 0x1000>;
+   interrupts = <2 1>;
+   status = "disabled";
+   label = "UART_0";
+  };
+  uart1: uart@40028000 {
+   compatible = "nordic,nrf-uarte";
+   reg = <0x40028000 0x1000>;
+   interrupts = <40 1>;
+   status = "disabled";
+   label = "UART_1";
+  };
+  gpiote: gpiote@40006000 {
+   compatible = "nordic,nrf-gpiote";
+   reg = <0x40006000 0x1000>;
+   interrupts = <6 5>;
+   status = "disabled";
+   label = "GPIOTE_0";
+  };
+  gpio0: gpio@50000000 {
+   compatible = "nordic,nrf-gpio";
+   gpio-controller;
+   reg = <0x50000000 0x200
+          0x50000500 0x300>;
+   #gpio-cells = <2>;
+   label = "GPIO_0";
+   status = "disabled";
+   port = <0>;
+  };
+  gpio1: gpio@50000300 {
+   compatible = "nordic,nrf-gpio";
+   gpio-controller;
+   reg = <0x50000300 0x200
+          0x50000800 0x300>;
+   #gpio-cells = <2>;
+   ngpios = <16>;
+   label = "GPIO_1";
+   status = "disabled";
+   port = <1>;
+  };
+  i2c0: i2c@40003000 {
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40003000 0x1000>;
+   clock-frequency = <100000>;
+   interrupts = <3 1>;
+   status = "disabled";
+   label = "I2C_0";
+  };
+  i2c1: i2c@40004000 {
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40004000 0x1000>;
+   clock-frequency = <100000>;
+   interrupts = <4 1>;
+   status = "disabled";
+   label = "I2C_1";
+  };
+  pwm0: pwm@4001c000 {
+   compatible = "nordic,nrf-pwm";
+   reg = <0x4001c000 0x1000>;
+   interrupts = <28 1>;
+   status = "disabled";
+   label = "PWM_0";
+   #pwm-cells = <1>;
+  };
+  pwm1: pwm@40021000 {
+   compatible = "nordic,nrf-pwm";
+   reg = <0x40021000 0x1000>;
+   interrupts = <33 1>;
+   status = "disabled";
+   label = "PWM_1";
+   #pwm-cells = <1>;
+  };
+  pwm2: pwm@40022000 {
+   compatible = "nordic,nrf-pwm";
+   reg = <0x40022000 0x1000>;
+   interrupts = <34 1>;
+   status = "disabled";
+   label = "PWM_2";
+   #pwm-cells = <1>;
+  };
+  pwm3: pwm@4002d000 {
+   compatible = "nordic,nrf-pwm";
+   reg = <0x4002d000 0x1000>;
+   interrupts = <45 1>;
+   status = "disabled";
+   label = "PWM_3";
+   #pwm-cells = <1>;
+  };
+  qdec: qdec@40012000 {
+   compatible = "nordic,nrf-qdec";
+   reg = <0x40012000 0x1000>;
+   interrupts = <18 1>;
+   status = "disabled";
+   label = "QDEC";
+  };
+  rng: random@4000d000 {
+   compatible = "nordic,nrf-rng";
+   reg = <0x4000d000 0x1000>;
+   interrupts = <13 1>;
+   status = "okay";
+   label = "RNG";
+  };
+  spi0: spi@40003000 {
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40003000 0x1000>;
+   interrupts = <3 1>;
+   status = "disabled";
+   label = "SPI_0";
+  };
+  spi1: spi@40004000 {
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40004000 0x1000>;
+   interrupts = <4 1>;
+   status = "disabled";
+   label = "SPI_1";
+  };
+  spi2: spi@40023000 {
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40023000 0x1000>;
+   interrupts = <35 1>;
+   status = "disabled";
+   label = "SPI_2";
+  };
+  spi3: spi@4002f000 {
+   compatible = "nordic,nrf-spim";
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x4002f000 0x1000>;
+   interrupts = <47 1>;
+   status = "disabled";
+   label = "SPI_3";
+  };
+  qspi: qspi@40029000 {
+   compatible = "nordic,nrf-qspi";
+   #address-cells = <1>;
+   #size-cells = <0>;
+   reg = <0x40029000 0x1000>;
+   interrupts = <41 1>;
+   status = "disabled";
+   label = "QSPI";
+  };
+  rtc0: rtc@4000b000 {
+   compatible = "nordic,nrf-rtc";
+   reg = <0x4000b000 0x1000>;
+   cc-num = <3>;
+   interrupts = <11 1>;
+   status = "okay";
+   clock-frequency = <32768>;
+   prescaler = <1>;
+   label = "RTC_0";
+  };
+  rtc1: rtc@40011000 {
+   compatible = "nordic,nrf-rtc";
+   reg = <0x40011000 0x1000>;
+   cc-num = <4>;
+   interrupts = <17 1>;
+   status = "okay";
+   clock-frequency = <32768>;
+   prescaler = <1>;
+   label = "RTC_1";
+  };
+  rtc2: rtc@40024000 {
+   compatible = "nordic,nrf-rtc";
+   reg = <0x40024000 0x1000>;
+   cc-num = <4>;
+   interrupts = <36 1>;
+   status = "okay";
+   clock-frequency = <32768>;
+   prescaler = <1>;
+   label = "RTC_2";
+  };
+  timer0: timer@40008000 {
+   compatible = "nordic,nrf-timer";
+   status = "okay";
+   reg = <0x40008000 0x1000>;
+   cc-num = <4>;
+   interrupts = <8 1>;
+   prescaler = <0>;
+   label = "TIMER_0";
+  };
+  timer1: timer@40009000 {
+   compatible = "nordic,nrf-timer";
+   status = "okay";
+   reg = <0x40009000 0x1000>;
+   cc-num = <4>;
+   interrupts = <9 1>;
+   prescaler = <0>;
+   label = "TIMER_1";
+  };
+  timer2: timer@4000a000 {
+   compatible = "nordic,nrf-timer";
+   status = "okay";
+   reg = <0x4000a000 0x1000>;
+   cc-num = <4>;
+   interrupts = <10 1>;
+   prescaler = <0>;
+   label = "TIMER_2";
+  };
+  timer3: timer@4001a000 {
+   compatible = "nordic,nrf-timer";
+   status = "okay";
+   reg = <0x4001a000 0x1000>;
+   cc-num = <6>;
+   interrupts = <26 1>;
+   prescaler = <0>;
+   label = "TIMER_3";
+  };
+  timer4: timer@4001b000 {
+   compatible = "nordic,nrf-timer";
+   status = "okay";
+   reg = <0x4001b000 0x1000>;
+   cc-num = <6>;
+   interrupts = <27 1>;
+   prescaler = <0>;
+   label = "TIMER_4";
+  };
+  temp: temp@4000c000 {
+   compatible = "nordic,nrf-temp";
+   reg = <0x4000c000 0x1000>;
+   interrupts = <12 1>;
+   status = "okay";
+   label = "TEMP_0";
+  };
+  usbd: usbd@40027000 {
+   compatible = "nordic,nrf-usbd";
+   reg = <0x40027000 0x1000>;
+   interrupts = <39 1>;
+   num-bidir-endpoints = <1>;
+   num-in-endpoints = <7>;
+   num-out-endpoints = <7>;
+   num-isoin-endpoints = <1>;
+   num-isoout-endpoints = <1>;
+   status = "disabled";
+   label = "USBD";
+  };
+  wdt: wdt0: watchdog@40010000 {
+   compatible = "nordic,nrf-watchdog";
+   reg = <0x40010000 0x1000>;
+   interrupts = <16 1>;
+   status = "okay";
+   label = "WDT";
+  };
+  cryptocell: crypto@5002a000 {
+   compatible = "nordic,nrf-cc310";
+   reg = <0x5002A000 0x1000>;
+   label = "CRYPTOCELL";
+   status = "okay";
+   #address-cells = <1>;
+   #size-cells = <1>;
+   cryptocell310: crypto@5002b000 {
+    compatible = "arm,cryptocell-310";
+    reg = <0x5002B000 0x1000>;
+    interrupts = <42 1>;
+    label = "CRYPTOCELL310";
+   };
+  };
+  ficr: ficr@10000000 {
+   compatible = "nordic,nrf-ficr";
+   reg = <0x10000000 0x1000>;
+   status = "okay";
+  };
+  uicr: uicr@10001000 {
+   compatible = "nordic,nrf-uicr";
+   reg = <0x10001000 0x1000>;
+   status = "okay";
+  };
+ };
+ sw_pwm: sw-pwm {
+  compatible = "nordic,nrf-sw-pwm";
+  status = "disabled";
+  label = "SW_PWM";
+  generator = <&timer2>;
+  channel-count = <3>;
+  clock-prescaler = <0>;
+  ppi-base = <0>;
+  gpiote-base = <0>;
+  #pwm-cells = <1>;
+ };
+};
+&nvic {
+ arm,num-irq-priority-bits = <3>;
+};
+&flash0 {
+ reg = <0x00000000 ((1024) * 1024)>;
+};
+&sram0 {
+ reg = <0x20000000 ((256) * 1024)>;
+};
+/ {
+ soc {
+  compatible = "nordic,nRF52840-QIAA", "nordic,nRF52840", "nordic,nRF52", "simple-bus";
+ };
+};
+/ {
+ pro_micro: connector {
+  compatible = "arduino-pro-micro";
+  #gpio-cells = <2>;
+  gpio-map-mask = <0xffffffff 0xffffffc0>;
+  gpio-map-pass-thru = <0 0x3f>;
+  gpio-map
+   = <0 0 &gpio0 8 0>
+   , <1 0 &gpio0 6 0>
+   , <2 0 &gpio0 17 0>
+   , <3 0 &gpio0 20 0>
+   , <4 0 &gpio0 22 0>
+   , <5 0 &gpio0 24 0>
+   , <6 0 &gpio1 0 0>
+   , <7 0 &gpio0 11 0>
+   , <8 0 &gpio1 4 0>
+   , <9 0 &gpio1 6 0>
+   , <10 0 &gpio0 9 0>
+   , <16 0 &gpio0 10 0>
+   , <14 0 &gpio1 11 0>
+   , <15 0 &gpio1 13 0>
+   , <18 0 &gpio1 15 0>
+   , <19 0 &gpio0 2 0>
+   , <20 0 &gpio0 29 0>
+   , <21 0 &gpio0 31 0>
+   ;
+ };
+ pro_micro_a: connector_a {
+  compatible = "arduino-pro-micro";
+  #gpio-cells = <2>;
+  gpio-map-mask = <0xffffffff 0xffffffc0>;
+  gpio-map-pass-thru = <0 0x3f>;
+  gpio-map
+   = <0 0 &gpio1 15 0>
+   , <1 0 &gpio0 2 0>
+   , <2 0 &gpio0 29 0>
+   , <3 0 &gpio0 31 0>
+   , <6 0 &gpio0 22 0>
+   , <7 0 &gpio1 0 0>
+   , <8 0 &gpio1 4 0>
+   , <9 0 &gpio1 6 0>
+   , <10 0 &gpio0 9 0>
+   ;
+ };
+};
+pro_micro_d: &pro_micro {};
+pro_micro_i2c: &i2c0 {};
+pro_micro_spi: &spi0 {};
+pro_micro_serial: &uart0 {};
+/ {
+ model = "nice!nano";
+ compatible = "nice,nano";
+ chosen {
+  zephyr,code-partition = &code_partition;
+  zephyr,sram = &sram0;
+  zephyr,flash = &flash0;
+  zephyr,console = &cdc_acm_uart;
+ };
+ leds {
+  compatible = "gpio-leds";
+  blue_led: led_0 {
+   gpios = <&gpio0 15 (0 << 0)>;
+   label = "Blue LED";
+  };
+ };
+};
+&adc {
+ status = "okay";
+};
+&gpiote {
+ status = "okay";
+};
+&gpio0 {
+ status = "okay";
+};
+&gpio1 {
+ status = "okay";
+};
+&i2c0 {
+ compatible = "nordic,nrf-twi";
+ sda-pin = <17>;
+ scl-pin = <20>;
+};
+&uart0 {
+ compatible = "nordic,nrf-uarte";
+ tx-pin = <6>;
+ rx-pin = <8>;
+};
+&usbd {
+ status = "okay";
+ cdc_acm_uart: cdc_acm_uart {
+  compatible = "zephyr,cdc-acm-uart";
+  label = "CDC_ACM_0";
+ };
+};
+&flash0 {
+ partitions {
+  compatible = "fixed-partitions";
+  #address-cells = <1>;
+  #size-cells = <1>;
+  sd_partition: partition@0 {
+   label = "softdevice";
+   reg = <0x00000000 0x00026000>;
+  };
+  code_partition: partition@26000 {
+   label = "code_partition";
+   reg = <0x00026000 0x000c6000>;
+  };
+  storage_partition: partition@ec000 {
+   label = "storage";
+   reg = <0x000ec000 0x00008000>;
+  };
+  boot_partition: partition@f4000 {
+   label = "adafruit_boot";
+   reg = <0x000f4000 0x0000c000>;
+  };
+ };
+};
+/ {
+ ext-power {
+  compatible = "zmk,ext-power-generic";
+  label = "EXT_POWER";
+  control-gpios = <&gpio0 13 (0 << 0)>;
+  init-delay-ms = <50>;
+ };
+ vbatt {
+  compatible = "zmk,battery-nrf-vddh";
+  label = "BATTERY";
+ };
+};
+/ {
+    chosen {
+        zmk,kscan = &kscan0;
+        zmk,matrix_transform = &default_transform;
+    };
+    default_transform: keymap_transform_0 {
+        compatible = "zmk,matrix-transform";
+        columns = <10>;
+        rows = <5>;
+        map = <
+(((0) << 8) + (0)) (((0) << 8) + (1)) (((0) << 8) + (2)) (((0) << 8) + (3)) (((0) << 8) + (4)) (((0) << 8) + (5)) (((0) << 8) + (6)) (((0) << 8) + (7)) (((0) << 8) + (8)) (((0) << 8) + (9)) (((0) << 8) + (10)) (((0) << 8) + (11))
+(((1) << 8) + (0)) (((1) << 8) + (1)) (((1) << 8) + (2)) (((1) << 8) + (3)) (((1) << 8) + (4)) (((1) << 8) + (5)) (((1) << 8) + (6)) (((1) << 8) + (7)) (((1) << 8) + (8)) (((1) << 8) + (9)) (((1) << 8) + (10)) (((1) << 8) + (11))
+(((2) << 8) + (0)) (((2) << 8) + (1)) (((2) << 8) + (2)) (((2) << 8) + (3)) (((2) << 8) + (4)) (((2) << 8) + (5)) (((2) << 8) + (6)) (((2) << 8) + (7)) (((2) << 8) + (8)) (((2) << 8) + (9)) (((2) << 8) + (10)) (((2) << 8) + (11))
+        (((3) << 8) + (1)) (((3) << 8) + (2)) (((3) << 8) + (7)) (((3) << 8) + (8))
+                        (((4) << 8) + (2)) (((3) << 8) + (3)) (((3) << 8) + (4)) (((3) << 8) + (5)) (((3) << 8) + (6)) (((4) << 8) + (7))
+                                (((4) << 8) + (3)) (((4) << 8) + (4)) (((4) << 8) + (5)) (((4) << 8) + (6))
+                                (((5) << 8) + (4)) (((5) << 8) + (5))
+        >;
+    };
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN";
+diode-direction = "col2row";
+        row-gpios
+            = <&gpio0 9 ((0 << 0) | (1 << 5))>
+            , <&gpio0 10 ((0 << 0) | (1 << 5))>
+            , <&gpio1 11 ((0 << 0) | (1 << 5))>
+            , <&gpio1 13 ((0 << 0) | (1 << 5))>
+            , <&gpio1 15 ((0 << 0) | (1 << 5))>
+            , <&gpio0 2 ((0 << 0) | (1 << 5))>
+            ;
+    };
+};
+&kscan0 {
+    col-gpios
+        = <&gpio0 22 (0 << 0)>
+        , <&gpio0 24 (0 << 0)>
+        , <&gpio1 0 (0 << 0)>
+        , <&gpio0 11 (0 << 0)>
+        , <&gpio1 4 (0 << 0)>
+        , <&gpio1 6 (0 << 0)>
+        ;
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ cp: kp: behavior_key_press {
+   compatible = "zmk,behavior-key-press";
+   label = "KEY_PRESS";
+   #binding-cells = <1>;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ trans: behavior_transparent {
+   compatible = "zmk,behavior-transparent";
+   label = "TRANS";
+   #binding-cells = <0>;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ none: behavior_none {
+   compatible = "zmk,behavior-none";
+   label = "NONE";
+   #binding-cells = <0>;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ mt: behavior_mod_tap {
+   compatible = "zmk,behavior-hold-tap";
+   label = "MOD_TAP";
+   #binding-cells = <2>;
+   flavor = "hold-preferred";
+   tapping-term-ms = <200>;
+   bindings = <&kp>, <&kp>;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ lt: behavior_layer_tap {
+   compatible = "zmk,behavior-hold-tap";
+   label = "LAYER_TAP";
+   #binding-cells = <2>;
+   flavor = "tap-preferred";
+   tapping-term-ms = <200>;
+   bindings = <&mo>, <&kp>;
+  };
+ };
+};
+       
+       
+       
+       
+/ {
+ behaviors {
+  /omit-if-no-ref/ gresc: grave_escape {
+   compatible = "zmk,behavior-mod-morph";
+   label = "GRAVE_ESCAPE";
+   #binding-cells = <0>;
+   bindings = <&kp (((((0x07) << 16) | (0x29))))>, <&kp ((((0x07) << 16) | (0x35)))>;
+            mods = <(0x08|0x02|0x80|0x20)>;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ sk: behavior_sticky_key {
+   compatible = "zmk,behavior-sticky-key";
+   label = "STICKY_KEY";
+   #binding-cells = <1>;
+   release-after-ms = <1000>;
+   bindings = <&kp>;
+   ignore-modifiers;
+  };
+  /omit-if-no-ref/ sl: behavior_sticky_layer {
+   compatible = "zmk,behavior-sticky-key";
+   label = "STICKY_LAYER";
+   #binding-cells = <1>;
+   release-after-ms = <1000>;
+   bindings = <&mo>;
+   quick-release;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ mo: behavior_momentary_layer {
+   compatible = "zmk,behavior-momentary-layer";
+   label = "MO";
+   #binding-cells = <1>;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ tog: behavior_toggle_layer {
+   compatible = "zmk,behavior-toggle-layer";
+   label = "TOGGLE_LAYER";
+   #binding-cells = <1>;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ to: behavior_to_layer {
+   compatible = "zmk,behavior-to-layer";
+   label = "TO_LAYER";
+   #binding-cells = <1>;
+  };
+ };
+};
+/ {
+ behaviors {
+  reset: behavior_reset {
+   compatible = "zmk,behavior-reset";
+   label = "RESET";
+   #binding-cells = <0>;
+  };
+  bootloader: behavior_reset_dfu {
+   compatible = "zmk,behavior-reset";
+   label = "BOOTLOAD";
+   type = <0x57>;
+   #binding-cells = <0>;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ inc_dec_cp: inc_dec_kp: behavior_sensor_rotate_key_press {
+   compatible = "zmk,behavior-sensor-rotate-key-press";
+   label = "ENC_KEY_PRESS";
+   #sensor-binding-cells = <2>;
+  };
+ };
+};
+/ {
+ behaviors {
+  rgb_ug: behavior_rgb_underglow {
+   compatible = "zmk,behavior-rgb-underglow";
+   label = "RGB_UG";
+   #binding-cells = <2>;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ bt: behavior_bluetooth {
+   compatible = "zmk,behavior-bluetooth";
+   label = "BLUETOOTH";
+   #binding-cells = <2>;
+  };
+ };
+};
+/ {
+ behaviors {
+  ext_power: behavior_ext_power {
+   compatible = "zmk,behavior-ext-power";
+   label = "EXTPOWER";
+   #binding-cells = <1>;
+  };
+ };
+};
+/ {
+    behaviors {
+        /omit-if-no-ref/ out: behavior_outputs {
+            compatible = "zmk,behavior-outputs";
+            label = "OUTPUTS";
+            #binding-cells = <1>;
+        };
+    };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ caps_word: behavior_caps_word {
+   compatible = "zmk,behavior-caps-word";
+   label = "CAPS_WORD";
+   #binding-cells = <0>;
+   continue-list = <((0x02 << 24 | (((0x07) << 16) | (0x2D))))>;
+  };
+ };
+};
+/ {
+ behaviors {
+  /omit-if-no-ref/ key_repeat: behavior_key_repeat {
+   compatible = "zmk,behavior-key-repeat";
+   label = "KEY_REPEAT";
+   #binding-cells = <0>;
+   usage-pages = <(0x07)>;
+  };
+ };
+};
+ / {
+ behaviors {
+  /omit-if-no-ref/ bl: behavior_backlight {
+   compatible = "zmk,behavior-backlight";
+   label = "BCKLGHT";
+   #binding-cells = <2>;
+  };
+ };
+};
+ / {
+ behaviors {
+  macro_tap: macro_control_mode_tap {
+   compatible = "zmk,macro-control-mode-tap";
+   label = "MAC_TAP";
+   #binding-cells = <0>;
+  };
+  macro_press: macro_control_mode_press {
+   compatible = "zmk,macro-control-mode-press";
+   label = "MAC_PRESS";
+   #binding-cells = <0>;
+  };
+  macro_release: macro_control_mode_release {
+   compatible = "zmk,macro-control-mode-release";
+   label = "MAC_REL";
+   #binding-cells = <0>;
+  };
+  macro_tap_time: macro_control_tap_time {
+   compatible = "zmk,macro-control-tap-time";
+   label = "MAC_TAP_TIME";
+   #binding-cells = <1>;
+  };
+  macro_wait_time: macro_control_wait_time {
+   compatible = "zmk,macro-control-wait-time";
+   label = "MAC_WAIT_TIME";
+   #binding-cells = <1>;
+  };
+  macro_pause_for_release: macro_pause_for_release {
+   compatible = "zmk,macro-pause-for-release";
+   label = "MAC_WAIT_REL";
+   #binding-cells = <0>;
+  };
+ };
+};
+&sl {
+    release-after-ms = <5000>;
+};
+&kscan0 {
+    debounce-press-ms = <30>;
+    debounce-release-ms = <30>;
+};
+/ {
+    keymap {
+        compatible = "zmk,keymap";
+        default_layer {
+            bindings = <
+     &kp (((((0x07) << 16) | (0x29)))) &kp ((((0x07) << 16) | (0x14))) &kp ((((0x07) << 16) | (0x1A))) &kp ((((0x07) << 16) | (0x08))) &kp ((((0x07) << 16) | (0x15))) &kp ((((0x07) << 16) | (0x17))) &kp ((((0x07) << 16) | (0x1C))) &kp ((((0x07) << 16) | (0x18))) &kp ((((0x07) << 16) | (0x0C))) &kp ((((0x07) << 16) | (0x12))) &kp ((((0x07) << 16) | (0x13)))
+     &kp ((((0x07) << 16) | (0x2B))) &kp ((((0x07) << 16) | (0x04))) &kp ((((0x07) << 16) | (0x16))) &kp ((((0x07) << 16) | (0x07))) &kp ((((0x07) << 16) | (0x09))) &kp ((((0x07) << 16) | (0x0A))) &kp ((((0x07) << 16) | (0x0B))) &kp ((((0x07) << 16) | (0x0D))) &kp ((((0x07) << 16) | (0x0E))) &kp ((((0x07) << 16) | (0x0F))) &kp (((((0x07) << 16) | (0x33))))
+     &kp (((((0x07) << 16) | (0xE5)))) &kp ((((0x07) << 16) | (0x1D))) &kp ((((0x07) << 16) | (0x1B))) &kp ((((0x07) << 16) | (0x06))) &kp ((((0x07) << 16) | (0x19))) &kp ((((0x07) << 16) | (0x05))) &kp ((((0x07) << 16) | (0x11))) &kp ((((0x07) << 16) | (0x10))) &kp ((((0x07) << 16) | (0x36))) &kp (((((0x07) << 16) | (0x37)))) &kp (((((0x07) << 16) | (0x38))))
+             &kp (((((0x07) << 16) | (0x50)))) &kp (((((0x07) << 16) | (0x4F)))) &kp (((((0x07) << 16) | (0x51)))) &kp (((((0x07) << 16) | (0x52))))
+                                         &kp (((((0x07) << 16) | (0x2A)))) &kp (((((0x07) << 16) | (0x29)))) &kp (((((0x07) << 16) | (0x4C)))) &kp (((((0x07) << 16) | (0x28)))) &kp ((((0x07) << 16) | (0x2C)))
+                                                    &kp ((((0x07) << 16) | (0x35))) &kp (((((0x07) << 16) | (0x2A)))) &kp (((((0x07) << 16) | (0xE0)))) &kp (((((0x07) << 16) | (0xE2))))
+            >;
+        };
+        mac_layer {
+            bindings = <
+      &kp ((((0x07) << 16) | (0x14))) &kp ((((0x07) << 16) | (0x1A))) &kp ((((0x07) << 16) | (0x08))) &kp ((((0x07) << 16) | (0x15))) &kp ((((0x07) << 16) | (0x17))) &kp ((((0x07) << 16) | (0x1C))) &kp ((((0x07) << 16) | (0x18))) &kp ((((0x07) << 16) | (0x0C))) &kp ((((0x07) << 16) | (0x12))) &kp ((((0x07) << 16) | (0x13)))
+     &kp ((((0x07) << 16) | (0x04))) &kp ((((0x07) << 16) | (0x16))) &kp ((((0x07) << 16) | (0x07))) &kp ((((0x07) << 16) | (0x09))) &kp ((((0x07) << 16) | (0x0A))) &kp ((((0x07) << 16) | (0x0B))) &kp ((((0x07) << 16) | (0x0D))) &kp ((((0x07) << 16) | (0x0E))) &kp ((((0x07) << 16) | (0x0F))) &kp (((((0x07) << 16) | (0x33))))
+     &kp ((((0x07) << 16) | (0x1D))) &kp ((((0x07) << 16) | (0x1B))) &kp ((((0x07) << 16) | (0x06))) &kp ((((0x07) << 16) | (0x19))) &kp ((((0x07) << 16) | (0x05))) &kp ((((0x07) << 16) | (0x11))) &kp ((((0x07) << 16) | (0x10))) &kp ((((0x07) << 16) | (0x36))) &kp (((((0x07) << 16) | (0x37)))) &kp (((((0x07) << 16) | (0x38))))
+             &kp (((((0x07) << 16) | (0x50)))) &kp (((((0x07) << 16) | (0x4F)))) &kp (((((0x07) << 16) | (0x51)))) &kp (((((0x07) << 16) | (0x52))))
+                                         &kp (((((0x07) << 16) | (0x2A)))) &kp (((((0x07) << 16) | (0x29)))) &kp (((((0x07) << 16) | (0x4C)))) &kp (((((0x07) << 16) | (0x28)))) &kp ((((0x07) << 16) | (0x2C)))
+                                                    &kp ((((0x07) << 16) | (0x35))) &kp (((((0x07) << 16) | (0x2A)))) &kp (((((0x07) << 16) | (0xE0)))) &kp (((((0x07) << 16) | (0xE2))))
+            >;
+        };
+    };
+};

@@ -1,0 +1,11 @@
+file_format: "1"
+id: dactylalps
+name: Dactyl Alps
+type: shield
+url: https://github.com/vly/dactyl-alps-zmk
+requires: [pro_micro]
+features:
+  - keys
+siblings:
+  - dactyl_alps_left
+  - dactyl_alps_right
