@@ -5,15 +5,16 @@ if SHIELD_DACTYL_ALPS_LEFT
 
     config ZMK_SPLIT_BLE_ROLE_CENTRAL
         default y
+
+    config ZMK_BATTERY_NRF_VDDH
+	    default y
 endif
 
 if SHIELD_DACTYL_ALPS_RIGHT
 
     config ZMK_KEYBOARD_NAME
-        default "Dactyl ALPS Right"
-
+        default "Dactyl Alps R"
 endif
-
 if SHIELD_DACTYL_ALPS_LEFT || SHIELD_DACTYL_ALPS_RIGHT
 
     config ZMK_SPLIT

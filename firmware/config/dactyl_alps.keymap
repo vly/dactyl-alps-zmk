@@ -4,10 +4,14 @@
 #include <dt-bindings/zmk/outputs.h>
 
 #define DEFAULT 0
-#define MAC     1
+#define LOWER   1
+#define RAISE   2
+#define CONTROL 3
+#define CLEAN   4
 
 #define HYPER(key) LS(LC(LA(LG(key))))
 #define MEH(key)   LS(LC(LA(key)))
+#define SCRN(key)  LS(LG(key))
 
 &sl {
     release-after-ms = <5000>;
@@ -24,25 +28,58 @@
 
         default_layer {
             bindings = <
+     &kp EQUAL       &kp Q     &kp W    &kp E     &kp R         &kp T           &kp Y     &kp U         &kp I     &kp O     &kp P          &kp MINUS
+     &kp TAB       &lt RAISE A     &kp S    &kp D     &lt LOWER F   &kp G           &kp H     &lt LOWER J   &kp K     &kp L     &lt RAISE SEMI &kp SQT
+     &kp LSHIFT    &kp Z     &kp X    &kp C     &kp V         &kp B           &kp N     &kp M         &kp COMMA &kp DOT   &kp FSLH       &kp RSHIFT
+                   &kp LEFT  &kp RIGHT                                                                &kp UP  &kp DOWN
+                                      &mt LGUI BSPC  &mt LCTL ESC                                 &mt RCTL ENTER     &mt RGUI SPACE
+                                                    &kp PIPE   &kp R   &kp TILDE   &lt CONTROL TILDE   &kp END   &tog CLEAN    &bootloader
+            >;
+        };
+
+        lower_layer {
+            bindings = <
+     &kp ESC    &kp Q     &kp W    &kp E     &kp R     &kp T                              &kp TILDE     &kp GRAVE     &kp LPAR     &kp RPAR     &kp MINUS &kp P
+     &kp TAB    &kp A     &kp S    &kp D     &kp F     &kp G                              &kp H     &kp J     &kp LBRC     &kp RBRC     &kp DQT &kp P
+     &kp LSHIFT    &kp EQUAL     &kp X    &kp C     &kp V     &kp B                              &kp N     &kp PIPE     &kp LBKT &kp RBKT   &kp BSLH   &kp RSHIFT
+             &kp LEFT  &kp RIGHT                                                                &kp UP  &kp DOWN
+                                      &mt LGUI BSPC  &mt LCTL ESC                                 &mt RCTL ENTER     &mt RGUI SPACE
+                                                    &bootloader   &kp R   &kp J   &kp O   &kp Z   &tog CLEAN    &bootloader
+            >;
+        };
+
+        raise_layer {
+            bindings = <
+     &kp ESC    &kp N1     &kp N2    &kp N3     &kp N4     &kp N5                              &kp N6     &kp N7     &kp N8     &kp N9     &kp N0 &kp P
+     &kp TAB    &kp EXCL     &kp AT    &kp HASH     &kp DLLR     &kp PRCNT                              &kp CARET     &kp AMPS     &kp STAR     &kp LPAR     &kp RPAR &kp P
+     &kp LSHIFT    &kp Z     &kp X    &kp C     &kp V     &kp B                              &kp N     &kp M     &kp COMMA &kp DOT   &kp FSLH   &kp RSHIFT
+             &kp LEFT  &kp RIGHT                                                                &kp UP  &kp DOWN
+                                      &mt LGUI BSPC  &mt LCTL ESC                                 &mt RCTL ENTER     &mt RGUI SPACE
+                                                    &bootloader   &kp R   &kp J   &kp O   &kp Z   &tog CLEAN    &bootloader
+            >;
+        };
+
+        control_layer {
+            bindings = <
+     &kp ESC    &kp Q     &kp W    &kp SCRN(U)     &kp SCRN(I)     &kp T                              &kp Y     &kp U     &kp I     &kp O     &kp P &kp P
+     &kp TAB    &kp A     &kp SCRN(LEFT)    &kp SCRN(J)     &kp SCRN(K)     &kp SCRN(RIGHT)                              &kp H     &kp J     &kp K     &kp L     &kp SEMI &kp P
+     &kp LSHIFT    &kp Z     &kp X    &kp C     &kp V     &kp B                              &kp N     &kp M     &kp COMMA &kp DOT   &kp FSLH   &kp RSHIFT
+            &kp LEFT  &kp RIGHT                                                                &kp UP  &kp DOWN
+                                      &mt LGUI BSPC  &mt LCTL ESC                                 &mt RCTL ENTER     &mt RGUI SPACE
+                                                    &bootloader   &kp R   &kp J   &kp O   &kp Z   &tog CLEAN    &bootloader
+            >;
+        };
+
+
+       clean_layer {
+            bindings = <
      &kp ESC    &kp Q     &kp W    &kp E     &kp R     &kp T                              &kp Y     &kp U     &kp I     &kp O     &kp P &kp P
      &kp TAB    &kp A     &kp S    &kp D     &kp F     &kp G                              &kp H     &kp J     &kp K     &kp L     &kp SEMI &kp P
-     &kp RSHIFT    &kp Z     &kp X    &kp C     &kp V     &kp B                              &kp N     &kp M     &kp COMMA &kp DOT   &kp FSLH   &kp P
-             &kp LEFT  &kp RIGHT                                              &kp DOWN  &kp UP
-                                         &kp BSPC &kp ESC &kp DEL  &kp ENTER  &kp SPACE
-                                                    &kp GRAVE   &kp BSPC   &kp LCTRL &kp LALT
+     &kp LSHIFT    &kp Z     &kp X    &kp C     &kp V     &kp B                              &kp N     &kp M     &kp COMMA &kp DOT   &kp FSLH   &kp RSHIFT
+             &kp LEFT  &kp RIGHT                                                                &kp UP  &kp DOWN
+                                      &mt LGUI BSPC  &mt LCTL ESC                                 &mt RCTL ENTER     &mt RGUI SPACE
+                                                    &bootloader   &kp R   &kp J   &kp O   &kp Z   &tog CLEAN    &bootloader
             >;
         };
-
-        mac_layer {
-            bindings = <
-      &kp Q     &kp W    &kp E     &kp R     &kp T                              &kp Y     &kp U     &kp I     &kp O     &kp P
-     &kp A     &kp S    &kp D     &kp F     &kp G                              &kp H     &kp J     &kp K     &kp L     &kp SEMI
-     &kp Z     &kp X    &kp C     &kp V     &kp B                              &kp N     &kp M     &kp COMMA &kp DOT   &kp FSLH
-             &kp LEFT  &kp RIGHT                                              &kp DOWN  &kp UP
-                                         &kp BSPC &kp ESC &kp DEL  &kp ENTER  &kp SPACE
-                                                    &kp GRAVE   &kp BSPC   &kp LCTRL &kp LALT
-            >;
-        };
-
     };
 };

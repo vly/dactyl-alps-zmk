@@ -1,0 +1,625 @@
+/dts-v1/;
+
+/ {
+	#address-cells = < 0x1 >;
+	#size-cells = < 0x1 >;
+	model = "nice!nano";
+	compatible = "nice,nano";
+	chosen {
+		zephyr,entropy = &rng;
+		zephyr,flash-controller = &flash_controller;
+		zephyr,code-partition = &code_partition;
+		zephyr,sram = &sram0;
+		zephyr,flash = &flash0;
+		zephyr,console = &cdc_acm_uart;
+		zmk,kscan = &kscan0;
+		zmk,matrix_transform = &default_transform;
+	};
+	aliases {
+	};
+	soc {
+		#address-cells = < 0x1 >;
+		#size-cells = < 0x1 >;
+		compatible = "nordic,nRF52840-QIAA", "nordic,nRF52840", "nordic,nRF52", "simple-bus";
+		interrupt-parent = < &nvic >;
+		ranges;
+		nvic: interrupt-controller@e000e100 {
+			#address-cells = < 0x1 >;
+			compatible = "arm,v7m-nvic";
+			reg = < 0xe000e100 0xc00 >;
+			interrupt-controller;
+			#interrupt-cells = < 0x2 >;
+			arm,num-irq-priority-bits = < 0x3 >;
+			phandle = < 0x1 >;
+		};
+		systick: timer@e000e010 {
+			compatible = "arm,armv7m-systick";
+			reg = < 0xe000e010 0x10 >;
+			status = "disabled";
+		};
+		ficr: ficr@10000000 {
+			compatible = "nordic,nrf-ficr";
+			reg = < 0x10000000 0x1000 >;
+			status = "okay";
+		};
+		uicr: uicr@10001000 {
+			compatible = "nordic,nrf-uicr";
+			reg = < 0x10001000 0x1000 >;
+			status = "okay";
+		};
+		sram0: memory@20000000 {
+			compatible = "mmio-sram";
+			reg = < 0x20000000 0x40000 >;
+		};
+		clock: clock@40000000 {
+			compatible = "nordic,nrf-clock";
+			reg = < 0x40000000 0x1000 >;
+			interrupts = < 0x0 0x1 >;
+			status = "okay";
+			label = "CLOCK";
+		};
+		radio: radio@40001000 {
+			compatible = "nordic,nrf-radio";
+			reg = < 0x40001000 0x1000 >;
+			interrupts = < 0x1 0x1 >;
+			status = "okay";
+		};
+		uart0: pro_micro_serial: uart@40002000 {
+			compatible = "nordic,nrf-uarte";
+			reg = < 0x40002000 0x1000 >;
+			interrupts = < 0x2 0x1 >;
+			status = "disabled";
+			label = "UART_0";
+			tx-pin = < 0x6 >;
+			rx-pin = < 0x8 >;
+		};
+		i2c0: pro_micro_i2c: i2c@40003000 {
+			compatible = "nordic,nrf-twi";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40003000 0x1000 >;
+			clock-frequency = < 0x186a0 >;
+			interrupts = < 0x3 0x1 >;
+			status = "disabled";
+			label = "I2C_0";
+			sda-pin = < 0x11 >;
+			scl-pin = < 0x14 >;
+		};
+		spi0: pro_micro_spi: spi@40003000 {
+			compatible = "nordic,nrf-spim";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40003000 0x1000 >;
+			interrupts = < 0x3 0x1 >;
+			status = "disabled";
+			label = "SPI_0";
+		};
+		i2c1: i2c@40004000 {
+			compatible = "nordic,nrf-twim";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40004000 0x1000 >;
+			clock-frequency = < 0x186a0 >;
+			interrupts = < 0x4 0x1 >;
+			status = "disabled";
+			label = "I2C_1";
+		};
+		spi1: spi@40004000 {
+			compatible = "nordic,nrf-spim";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40004000 0x1000 >;
+			interrupts = < 0x4 0x1 >;
+			status = "disabled";
+			label = "SPI_1";
+		};
+		gpiote: gpiote@40006000 {
+			compatible = "nordic,nrf-gpiote";
+			reg = < 0x40006000 0x1000 >;
+			interrupts = < 0x6 0x5 >;
+			status = "okay";
+			label = "GPIOTE_0";
+		};
+		adc: adc@40007000 {
+			compatible = "nordic,nrf-saadc";
+			reg = < 0x40007000 0x1000 >;
+			interrupts = < 0x7 0x1 >;
+			status = "okay";
+			label = "ADC_0";
+			#io-channel-cells = < 0x1 >;
+		};
+		timer0: timer@40008000 {
+			compatible = "nordic,nrf-timer";
+			status = "okay";
+			reg = < 0x40008000 0x1000 >;
+			cc-num = < 0x4 >;
+			interrupts = < 0x8 0x1 >;
+			prescaler = < 0x0 >;
+			label = "TIMER_0";
+		};
+		timer1: timer@40009000 {
+			compatible = "nordic,nrf-timer";
+			status = "okay";
+			reg = < 0x40009000 0x1000 >;
+			cc-num = < 0x4 >;
+			interrupts = < 0x9 0x1 >;
+			prescaler = < 0x0 >;
+			label = "TIMER_1";
+		};
+		timer2: timer@4000a000 {
+			compatible = "nordic,nrf-timer";
+			status = "okay";
+			reg = < 0x4000a000 0x1000 >;
+			cc-num = < 0x4 >;
+			interrupts = < 0xa 0x1 >;
+			prescaler = < 0x0 >;
+			label = "TIMER_2";
+			phandle = < 0x2 >;
+		};
+		rtc0: rtc@4000b000 {
+			compatible = "nordic,nrf-rtc";
+			reg = < 0x4000b000 0x1000 >;
+			cc-num = < 0x3 >;
+			interrupts = < 0xb 0x1 >;
+			status = "okay";
+			clock-frequency = < 0x8000 >;
+			prescaler = < 0x1 >;
+			label = "RTC_0";
+		};
+		temp: temp@4000c000 {
+			compatible = "nordic,nrf-temp";
+			reg = < 0x4000c000 0x1000 >;
+			interrupts = < 0xc 0x1 >;
+			status = "okay";
+			label = "TEMP_0";
+		};
+		rng: random@4000d000 {
+			compatible = "nordic,nrf-rng";
+			reg = < 0x4000d000 0x1000 >;
+			interrupts = < 0xd 0x1 >;
+			status = "okay";
+			label = "RNG";
+		};
+		ecb: ecb@4000e000 {
+			compatible = "nordic,nrf-ecb";
+			reg = < 0x4000e000 0x1000 >;
+			interrupts = < 0xe 0x1 >;
+			status = "okay";
+			label = "ECB";
+		};
+		wdt: wdt0: watchdog@40010000 {
+			compatible = "nordic,nrf-watchdog";
+			reg = < 0x40010000 0x1000 >;
+			interrupts = < 0x10 0x1 >;
+			status = "okay";
+			label = "WDT";
+		};
+		rtc1: rtc@40011000 {
+			compatible = "nordic,nrf-rtc";
+			reg = < 0x40011000 0x1000 >;
+			cc-num = < 0x4 >;
+			interrupts = < 0x11 0x1 >;
+			status = "okay";
+			clock-frequency = < 0x8000 >;
+			prescaler = < 0x1 >;
+			label = "RTC_1";
+		};
+		qdec: qdec@40012000 {
+			compatible = "nordic,nrf-qdec";
+			reg = < 0x40012000 0x1000 >;
+			interrupts = < 0x12 0x1 >;
+			status = "disabled";
+			label = "QDEC";
+		};
+		egu0: egu@40014000 {
+			compatible = "nordic,nrf-egu";
+			reg = < 0x40014000 0x1000 >;
+			interrupts = < 0x14 0x1 >;
+			status = "okay";
+		};
+		egu1: egu@40015000 {
+			compatible = "nordic,nrf-egu";
+			reg = < 0x40015000 0x1000 >;
+			interrupts = < 0x15 0x1 >;
+			status = "okay";
+		};
+		egu2: egu@40016000 {
+			compatible = "nordic,nrf-egu";
+			reg = < 0x40016000 0x1000 >;
+			interrupts = < 0x16 0x1 >;
+			status = "okay";
+		};
+		egu3: egu@40017000 {
+			compatible = "nordic,nrf-egu";
+			reg = < 0x40017000 0x1000 >;
+			interrupts = < 0x17 0x1 >;
+			status = "okay";
+		};
+		egu4: egu@40018000 {
+			compatible = "nordic,nrf-egu";
+			reg = < 0x40018000 0x1000 >;
+			interrupts = < 0x18 0x1 >;
+			status = "okay";
+		};
+		egu5: egu@40019000 {
+			compatible = "nordic,nrf-egu";
+			reg = < 0x40019000 0x1000 >;
+			interrupts = < 0x19 0x1 >;
+			status = "okay";
+		};
+		timer3: timer@4001a000 {
+			compatible = "nordic,nrf-timer";
+			status = "okay";
+			reg = < 0x4001a000 0x1000 >;
+			cc-num = < 0x6 >;
+			interrupts = < 0x1a 0x1 >;
+			prescaler = < 0x0 >;
+			label = "TIMER_3";
+		};
+		timer4: timer@4001b000 {
+			compatible = "nordic,nrf-timer";
+			status = "okay";
+			reg = < 0x4001b000 0x1000 >;
+			cc-num = < 0x6 >;
+			interrupts = < 0x1b 0x1 >;
+			prescaler = < 0x0 >;
+			label = "TIMER_4";
+		};
+		pwm0: pwm@4001c000 {
+			compatible = "nordic,nrf-pwm";
+			reg = < 0x4001c000 0x1000 >;
+			interrupts = < 0x1c 0x1 >;
+			status = "disabled";
+			label = "PWM_0";
+			#pwm-cells = < 0x1 >;
+		};
+		pdm0: pdm@4001d000 {
+			compatible = "nordic,nrf-pdm";
+			reg = < 0x4001d000 0x1000 >;
+			interrupts = < 0x1d 0x1 >;
+			status = "disabled";
+			label = "PDM_0";
+		};
+		flash_controller: flash-controller@4001e000 {
+			compatible = "nordic,nrf52-flash-controller";
+			reg = < 0x4001e000 0x1000 >;
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x1 >;
+			label = "NRF_FLASH_DRV_NAME";
+			flash0: flash@0 {
+				compatible = "soc-nv-flash";
+				label = "NRF_FLASH";
+				erase-block-size = < 0x1000 >;
+				write-block-size = < 0x4 >;
+				reg = < 0x0 0x100000 >;
+				partitions {
+					compatible = "fixed-partitions";
+					#address-cells = < 0x1 >;
+					#size-cells = < 0x1 >;
+					sd_partition: partition@0 {
+						label = "softdevice";
+						reg = < 0x0 0x26000 >;
+					};
+					code_partition: partition@26000 {
+						label = "code_partition";
+						reg = < 0x26000 0xc6000 >;
+					};
+					storage_partition: partition@ec000 {
+						label = "storage";
+						reg = < 0xec000 0x8000 >;
+					};
+					boot_partition: partition@f4000 {
+						label = "adafruit_boot";
+						reg = < 0xf4000 0xc000 >;
+					};
+				};
+			};
+		};
+		pwm1: pwm@40021000 {
+			compatible = "nordic,nrf-pwm";
+			reg = < 0x40021000 0x1000 >;
+			interrupts = < 0x21 0x1 >;
+			status = "disabled";
+			label = "PWM_1";
+			#pwm-cells = < 0x1 >;
+		};
+		pwm2: pwm@40022000 {
+			compatible = "nordic,nrf-pwm";
+			reg = < 0x40022000 0x1000 >;
+			interrupts = < 0x22 0x1 >;
+			status = "disabled";
+			label = "PWM_2";
+			#pwm-cells = < 0x1 >;
+		};
+		spi2: spi@40023000 {
+			compatible = "nordic,nrf-spim";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40023000 0x1000 >;
+			interrupts = < 0x23 0x1 >;
+			status = "disabled";
+			label = "SPI_2";
+		};
+		rtc2: rtc@40024000 {
+			compatible = "nordic,nrf-rtc";
+			reg = < 0x40024000 0x1000 >;
+			cc-num = < 0x4 >;
+			interrupts = < 0x24 0x1 >;
+			status = "okay";
+			clock-frequency = < 0x8000 >;
+			prescaler = < 0x1 >;
+			label = "RTC_2";
+		};
+		i2s0: i2s@40025000 {
+			compatible = "nordic,nrf-i2s";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40025000 0x1000 >;
+			interrupts = < 0x25 0x1 >;
+			status = "disabled";
+			label = "I2S_0";
+		};
+		usbd: usbd@40027000 {
+			compatible = "nordic,nrf-usbd";
+			reg = < 0x40027000 0x1000 >;
+			interrupts = < 0x27 0x1 >;
+			num-bidir-endpoints = < 0x1 >;
+			num-in-endpoints = < 0x7 >;
+			num-out-endpoints = < 0x7 >;
+			num-isoin-endpoints = < 0x1 >;
+			num-isoout-endpoints = < 0x1 >;
+			status = "okay";
+			label = "USBD";
+			cdc_acm_uart: cdc_acm_uart {
+				compatible = "zephyr,cdc-acm-uart";
+				label = "CDC_ACM_0";
+			};
+		};
+		uart1: uart@40028000 {
+			compatible = "nordic,nrf-uarte";
+			reg = < 0x40028000 0x1000 >;
+			interrupts = < 0x28 0x1 >;
+			status = "disabled";
+			label = "UART_1";
+		};
+		qspi: qspi@40029000 {
+			compatible = "nordic,nrf-qspi";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x40029000 0x1000 >, < 0x12000000 0x8000000 >;
+			reg-names = "qspi", "qspi_mm";
+			interrupts = < 0x29 0x1 >;
+			status = "disabled";
+			label = "QSPI";
+		};
+		pwm3: pwm@4002d000 {
+			compatible = "nordic,nrf-pwm";
+			reg = < 0x4002d000 0x1000 >;
+			interrupts = < 0x2d 0x1 >;
+			status = "disabled";
+			label = "PWM_3";
+			#pwm-cells = < 0x1 >;
+		};
+		spi3: spi@4002f000 {
+			compatible = "nordic,nrf-spim";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x0 >;
+			reg = < 0x4002f000 0x1000 >;
+			interrupts = < 0x2f 0x1 >;
+			status = "disabled";
+			label = "SPI_3";
+		};
+		gpio0: gpio@50000000 {
+			compatible = "nordic,nrf-gpio";
+			gpio-controller;
+			reg = < 0x50000000 0x200 0x50000500 0x300 >;
+			#gpio-cells = < 0x2 >;
+			label = "GPIO_0";
+			status = "okay";
+			port = < 0x0 >;
+			phandle = < 0x3 >;
+		};
+		gpio1: gpio@50000300 {
+			compatible = "nordic,nrf-gpio";
+			gpio-controller;
+			reg = < 0x50000300 0x200 0x50000800 0x300 >;
+			#gpio-cells = < 0x2 >;
+			ngpios = < 0x10 >;
+			label = "GPIO_1";
+			status = "okay";
+			port = < 0x1 >;
+			phandle = < 0x4 >;
+		};
+		cryptocell: crypto@5002a000 {
+			compatible = "nordic,nrf-cc310";
+			reg = < 0x5002a000 0x1000 >;
+			label = "CRYPTOCELL";
+			status = "okay";
+			#address-cells = < 0x1 >;
+			#size-cells = < 0x1 >;
+			cryptocell310: crypto@5002b000 {
+				compatible = "arm,cryptocell-310";
+				reg = < 0x5002b000 0x1000 >;
+				interrupts = < 0x2a 0x1 >;
+				label = "CRYPTOCELL310";
+			};
+		};
+	};
+	pinctrl: pin-controller {
+		compatible = "nordic,nrf-pinctrl";
+	};
+	cpus {
+		#address-cells = < 0x1 >;
+		#size-cells = < 0x0 >;
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-m4f";
+			reg = < 0x0 >;
+			swo-ref-frequency = < 0x1e84800 >;
+		};
+	};
+	sw_pwm: sw-pwm {
+		compatible = "nordic,nrf-sw-pwm";
+		status = "disabled";
+		label = "SW_PWM";
+		generator = < &timer2 >;
+		channel-count = < 0x3 >;
+		clock-prescaler = < 0x0 >;
+		#pwm-cells = < 0x1 >;
+	};
+	pro_micro: pro_micro_d: connector {
+		compatible = "arduino-pro-micro";
+		#gpio-cells = < 0x2 >;
+		gpio-map-mask = < 0xffffffff 0xffffffc0 >;
+		gpio-map-pass-thru = < 0x0 0x3f >;
+		gpio-map = < 0x0 0x0 &gpio0 0x8 0x0 >, < 0x1 0x0 &gpio0 0x6 0x0 >, < 0x2 0x0 &gpio0 0x11 0x0 >, < 0x3 0x0 &gpio0 0x14 0x0 >, < 0x4 0x0 &gpio0 0x16 0x0 >, < 0x5 0x0 &gpio0 0x18 0x0 >, < 0x6 0x0 &gpio1 0x0 0x0 >, < 0x7 0x0 &gpio0 0xb 0x0 >, < 0x8 0x0 &gpio1 0x4 0x0 >, < 0x9 0x0 &gpio1 0x6 0x0 >, < 0xa 0x0 &gpio0 0x9 0x0 >, < 0x10 0x0 &gpio0 0xa 0x0 >, < 0xe 0x0 &gpio1 0xb 0x0 >, < 0xf 0x0 &gpio1 0xd 0x0 >, < 0x12 0x0 &gpio1 0xf 0x0 >, < 0x13 0x0 &gpio0 0x2 0x0 >, < 0x14 0x0 &gpio0 0x1d 0x0 >, < 0x15 0x0 &gpio0 0x1f 0x0 >;
+		phandle = < 0x5 >;
+	};
+	pro_micro_a: connector_a {
+		compatible = "arduino-pro-micro";
+		#gpio-cells = < 0x2 >;
+		gpio-map-mask = < 0xffffffff 0xffffffc0 >;
+		gpio-map-pass-thru = < 0x0 0x3f >;
+		gpio-map = < 0x0 0x0 &gpio1 0xf 0x0 >, < 0x1 0x0 &gpio0 0x2 0x0 >, < 0x2 0x0 &gpio0 0x1d 0x0 >, < 0x3 0x0 &gpio0 0x1f 0x0 >, < 0x6 0x0 &gpio0 0x16 0x0 >, < 0x7 0x0 &gpio1 0x0 0x0 >, < 0x8 0x0 &gpio1 0x4 0x0 >, < 0x9 0x0 &gpio1 0x6 0x0 >, < 0xa 0x0 &gpio0 0x9 0x0 >;
+	};
+	leds {
+		compatible = "gpio-leds";
+		blue_led: led_0 {
+			gpios = < &gpio0 0xf 0x0 >;
+			label = "Blue LED";
+		};
+	};
+	ext-power {
+		compatible = "zmk,ext-power-generic";
+		label = "EXT_POWER";
+		control-gpios = < &gpio0 0xd 0x0 >;
+		init-delay-ms = < 0x32 >;
+	};
+	vbatt {
+		compatible = "zmk,battery-nrf-vddh";
+		label = "BATTERY";
+	};
+	default_transform: keymap_transform_0 {
+		compatible = "zmk,matrix-transform";
+		columns = < 0xc >;
+		rows = < 0x6 >;
+		map = < 0x0 0x1 0x2 0x3 0x4 0x5 0x6 0x7 0x8 0x9 0xa 0xb 0x100 0x101 0x102 0x103 0x104 0x105 0x106 0x107 0x108 0x109 0x10a 0x10b 0x200 0x201 0x202 0x203 0x204 0x205 0x206 0x207 0x208 0x209 0x20a 0x20b 0x302 0x303 0x308 0x309 0x304 0x305 0x306 0x307 0x404 0x405 0x406 0x407 0x504 0x505 0x506 0x507 >;
+	};
+	kscan0: kscan {
+		compatible = "zmk,kscan-gpio-matrix";
+		label = "KSCAN";
+		diode-direction = "row2col";
+		row-gpios = < &pro_micro_d 0x2 0x20 >, < &pro_micro_d 0x3 0x20 >, < &pro_micro_d 0x4 0x20 >, < &pro_micro_d 0x5 0x20 >, < &pro_micro_d 0x6 0x20 >, < &pro_micro_d 0x7 0x20 >;
+		col-gpios = < &pro_micro_d 0xe 0x20 >, < &pro_micro_d 0xf 0x20 >, < &pro_micro_d 0x12 0x20 >, < &pro_micro_d 0x13 0x20 >, < &pro_micro_d 0x15 0x20 >, < &pro_micro_d 0x14 0x20 >;
+		debounce-press-ms = < 0x1e >;
+		debounce-release-ms = < 0x1e >;
+	};
+	behaviors {
+		cp: kp: behavior_key_press {
+			compatible = "zmk,behavior-key-press";
+			label = "KEY_PRESS";
+			#binding-cells = < 0x1 >;
+			phandle = < 0x6 >;
+		};
+		mt: behavior_mod_tap {
+			compatible = "zmk,behavior-hold-tap";
+			label = "MOD_TAP";
+			#binding-cells = < 0x2 >;
+			flavor = "hold-preferred";
+			tapping-term-ms = < 0xc8 >;
+			bindings = < &kp >, < &kp >;
+			phandle = < 0x9 >;
+		};
+		lt: behavior_layer_tap {
+			compatible = "zmk,behavior-hold-tap";
+			label = "LAYER_TAP";
+			#binding-cells = < 0x2 >;
+			flavor = "tap-preferred";
+			tapping-term-ms = < 0xc8 >;
+			bindings = < &mo >, < &kp >;
+			phandle = < 0x8 >;
+		};
+		mo: behavior_momentary_layer {
+			compatible = "zmk,behavior-momentary-layer";
+			label = "MO";
+			#binding-cells = < 0x1 >;
+			phandle = < 0x7 >;
+		};
+		tog: behavior_toggle_layer {
+			compatible = "zmk,behavior-toggle-layer";
+			label = "TOGGLE_LAYER";
+			#binding-cells = < 0x1 >;
+			phandle = < 0xb >;
+		};
+		reset: behavior_reset {
+			compatible = "zmk,behavior-reset";
+			label = "RESET";
+			#binding-cells = < 0x0 >;
+		};
+		bootloader: behavior_reset_dfu {
+			compatible = "zmk,behavior-reset";
+			label = "BOOTLOAD";
+			type = < 0x57 >;
+			#binding-cells = < 0x0 >;
+			phandle = < 0xa >;
+		};
+		rgb_ug: behavior_rgb_underglow {
+			compatible = "zmk,behavior-rgb-underglow";
+			label = "RGB_UG";
+			#binding-cells = < 0x2 >;
+		};
+		ext_power: behavior_ext_power {
+			compatible = "zmk,behavior-ext-power";
+			label = "EXTPOWER";
+			#binding-cells = < 0x1 >;
+		};
+		macro_tap: macro_control_mode_tap {
+			compatible = "zmk,macro-control-mode-tap";
+			label = "MAC_TAP";
+			#binding-cells = < 0x0 >;
+		};
+		macro_press: macro_control_mode_press {
+			compatible = "zmk,macro-control-mode-press";
+			label = "MAC_PRESS";
+			#binding-cells = < 0x0 >;
+		};
+		macro_release: macro_control_mode_release {
+			compatible = "zmk,macro-control-mode-release";
+			label = "MAC_REL";
+			#binding-cells = < 0x0 >;
+		};
+		macro_tap_time: macro_control_tap_time {
+			compatible = "zmk,macro-control-tap-time";
+			label = "MAC_TAP_TIME";
+			#binding-cells = < 0x1 >;
+		};
+		macro_wait_time: macro_control_wait_time {
+			compatible = "zmk,macro-control-wait-time";
+			label = "MAC_WAIT_TIME";
+			#binding-cells = < 0x1 >;
+		};
+		macro_pause_for_release: macro_pause_for_release {
+			compatible = "zmk,macro-pause-for-release";
+			label = "MAC_WAIT_REL";
+			#binding-cells = < 0x0 >;
+		};
+	};
+	keymap {
+		compatible = "zmk,keymap";
+		default_layer {
+			bindings = < &kp 0x70029 &kp 0x70014 &kp 0x7001a &kp 0x70008 &kp 0x70015 &kp 0x70017 &kp 0x7001c &kp 0x70018 &kp 0x7000c &kp 0x70012 &kp 0x70013 &kp 0x7002d &kp 0x7002b &kp 0x70004 &kp 0x70016 &kp 0x70007 &lt 0x1 0x70009 &kp 0x7000a &kp 0x7000b &lt 0x1 0x7000d &kp 0x7000e &kp 0x7000f &lt 0x2 0x70033 &kp 0x70034 &kp 0x700e1 &kp 0x7001d &kp 0x7001b &kp 0x70006 &kp 0x70019 &kp 0x70005 &kp 0x70011 &kp 0x70010 &kp 0x70036 &kp 0x70037 &kp 0x70038 &kp 0x700e5 &kp 0x70050 &kp 0x7004f &kp 0x70052 &kp 0x70051 &mt 0x700e3 0x7002a &mt 0x700e0 0x70029 &mt 0x700e4 0x70028 &mt 0x700e7 0x7002c &bootloader &kp 0x70015 &kp 0x2070035 &lt 0x3 0x2070035 &kp 0x7001d &tog 0x4 &bootloader >;
+		};
+		lower_layer {
+			bindings = < &kp 0x70029 &kp 0x70014 &kp 0x7001a &kp 0x70008 &kp 0x70015 &kp 0x70017 &kp 0x2070035 &kp 0x70035 &kp 0x2070026 &kp 0x2070027 &kp 0x7002d &kp 0x70013 &kp 0x7002b &kp 0x70004 &kp 0x70016 &kp 0x70007 &kp 0x70009 &kp 0x7000a &kp 0x7000b &kp 0x7000d &kp 0x207002f &kp 0x2070030 &kp 0x2070034 &kp 0x70013 &kp 0x700e1 &kp 0x7002e &kp 0x7001b &kp 0x70006 &kp 0x70019 &kp 0x70005 &kp 0x70011 &kp 0x2070031 &kp 0x7002f &kp 0x70030 &kp 0x70031 &kp 0x700e5 &kp 0x70050 &kp 0x7004f &kp 0x70052 &kp 0x70051 &mt 0x700e3 0x7002a &mt 0x700e0 0x70029 &mt 0x700e4 0x70028 &mt 0x700e7 0x7002c &bootloader &kp 0x70015 &kp 0x7000d &kp 0x70012 &kp 0x7001d &tog 0x4 &bootloader >;
+		};
+		raise_layer {
+			bindings = < &kp 0x70029 &kp 0x7001e &kp 0x7001f &kp 0x70020 &kp 0x70021 &kp 0x70022 &kp 0x70023 &kp 0x70024 &kp 0x70025 &kp 0x70026 &kp 0x70027 &kp 0x70013 &kp 0x7002b &kp 0x207001e &kp 0x207001f &kp 0x2070020 &kp 0x2070021 &kp 0x2070022 &kp 0x2070023 &kp 0x2070024 &kp 0x2070025 &kp 0x2070026 &kp 0x2070027 &kp 0x70013 &kp 0x700e1 &kp 0x7001d &kp 0x7001b &kp 0x70006 &kp 0x70019 &kp 0x70005 &kp 0x70011 &kp 0x70010 &kp 0x70036 &kp 0x70037 &kp 0x70038 &kp 0x700e5 &kp 0x70050 &kp 0x7004f &kp 0x70052 &kp 0x70051 &mt 0x700e3 0x7002a &mt 0x700e0 0x70029 &mt 0x700e4 0x70028 &mt 0x700e7 0x7002c &bootloader &kp 0x70015 &kp 0x7000d &kp 0x70012 &kp 0x7001d &tog 0x4 &bootloader >;
+		};
+		control_layer {
+			bindings = < &kp 0x70029 &kp 0x70014 &kp 0x7001a &kp 0xa070018 &kp 0xa07000c &kp 0x70017 &kp 0x7001c &kp 0x70018 &kp 0x7000c &kp 0x70012 &kp 0x70013 &kp 0x70013 &kp 0x7002b &kp 0x70004 &kp 0xa070050 &kp 0xa07000d &kp 0xa07000e &kp 0xa07004f &kp 0x7000b &kp 0x7000d &kp 0x7000e &kp 0x7000f &kp 0x70033 &kp 0x70013 &kp 0x700e1 &kp 0x7001d &kp 0x7001b &kp 0x70006 &kp 0x70019 &kp 0x70005 &kp 0x70011 &kp 0x70010 &kp 0x70036 &kp 0x70037 &kp 0x70038 &kp 0x700e5 &kp 0x70050 &kp 0x7004f &kp 0x70052 &kp 0x70051 &mt 0x700e3 0x7002a &mt 0x700e0 0x70029 &mt 0x700e4 0x70028 &mt 0x700e7 0x7002c &bootloader &kp 0x70015 &kp 0x7000d &kp 0x70012 &kp 0x7001d &tog 0x4 &bootloader >;
+		};
+		clean_layer {
+			bindings = < &kp 0x70029 &kp 0x70014 &kp 0x7001a &kp 0x70008 &kp 0x70015 &kp 0x70017 &kp 0x7001c &kp 0x70018 &kp 0x7000c &kp 0x70012 &kp 0x70013 &kp 0x70013 &kp 0x7002b &kp 0x70004 &kp 0x70016 &kp 0x70007 &kp 0x70009 &kp 0x7000a &kp 0x7000b &kp 0x7000d &kp 0x7000e &kp 0x7000f &kp 0x70033 &kp 0x70013 &kp 0x700e1 &kp 0x7001d &kp 0x7001b &kp 0x70006 &kp 0x70019 &kp 0x70005 &kp 0x70011 &kp 0x70010 &kp 0x70036 &kp 0x70037 &kp 0x70038 &kp 0x700e5 &kp 0x70050 &kp 0x7004f &kp 0x70052 &kp 0x70051 &mt 0x700e3 0x7002a &mt 0x700e0 0x70029 &mt 0x700e4 0x70028 &mt 0x700e7 0x7002c &bootloader &kp 0x70015 &kp 0x7000d &kp 0x70012 &kp 0x7001d &tog 0x4 &bootloader >;
+		};
+	};
+};
