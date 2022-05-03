@@ -33,18 +33,18 @@
      &kp LSHIFT    &kp Z     &kp X    &kp C     &kp V         &kp B           &kp N     &kp M         &kp COMMA &kp DOT   &kp FSLH       &kp RSHIFT
                    &kp LEFT  &kp RIGHT                                                                &kp UP  &kp DOWN
                                       &mt LGUI BSPC  &mt LCTL ESC                                 &mt RCTL ENTER     &mt RGUI SPACE
-                                                    &kp PIPE   &kp R   &kp TILDE   &lt CONTROL TILDE   &kp END   &tog CLEAN    &bootloader
+                                                    &kp PIPE   &tog CLEAN   &kp TILDE   &lt CONTROL TILDE   &kp END   &kp HOME    &kp PLUS &caps_word
             >;
         };
 
         lower_layer {
             bindings = <
-     &kp ESC    &kp Q     &kp W    &kp E     &kp R     &kp T                              &kp TILDE     &kp GRAVE     &kp LPAR     &kp RPAR     &kp MINUS &kp P
-     &kp TAB    &kp A     &kp S    &kp D     &kp F     &kp G                              &kp H     &kp J     &kp LBRC     &kp RBRC     &kp DQT &kp P
+     &kp ESC    &kp Q     &kp W    &kp E     &kp R     &kp T                              &kp TILDE     &kp GRAVE     &kp LPAR     &kp RPAR     &kp MINUS &kp UNDER
+     &kp TAB    &kp A     &kp S    &kp D     &kp F     &kp G                              &kp H     &kp J     &kp LBRC     &kp RBRC     &kp DQT &kp SQT
      &kp LSHIFT    &kp EQUAL     &kp X    &kp C     &kp V     &kp B                              &kp N     &kp PIPE     &kp LBKT &kp RBKT   &kp BSLH   &kp RSHIFT
              &kp LEFT  &kp RIGHT                                                                &kp UP  &kp DOWN
                                       &mt LGUI BSPC  &mt LCTL ESC                                 &mt RCTL ENTER     &mt RGUI SPACE
-                                                    &bootloader   &kp R   &kp J   &kp O   &kp Z   &tog CLEAN    &bootloader
+                                                    &reset   &bootloader   &kp J   &kp O   &kp Z   &tog CLEAN    &bootloader    &reset
             >;
         };
 
@@ -55,7 +55,7 @@
      &kp LSHIFT    &kp Z     &kp X    &kp C     &kp V     &kp B                              &kp N     &kp M     &kp COMMA &kp DOT   &kp FSLH   &kp RSHIFT
              &kp LEFT  &kp RIGHT                                                                &kp UP  &kp DOWN
                                       &mt LGUI BSPC  &mt LCTL ESC                                 &mt RCTL ENTER     &mt RGUI SPACE
-                                                    &bootloader   &kp R   &kp J   &kp O   &kp Z   &tog CLEAN    &bootloader
+                                                    &reset   &bootloader   &kp J   &kp O   &kp Z   &tog CLEAN    &bootloader  &reset
             >;
         };
 
@@ -73,12 +73,12 @@
 
        clean_layer {
             bindings = <
-     &kp ESC    &kp Q     &kp W    &kp E     &kp R     &kp T                              &kp Y     &kp U     &kp I     &kp O     &kp P &kp P
-     &kp TAB    &kp A     &kp S    &kp D     &kp F     &kp G                              &kp H     &kp J     &kp K     &kp L     &kp SEMI &kp P
+     &kp ESC    &kp Q     &kp W    &kp E     &kp R     &kp T                              &kp Y     &kp U     &kp I     &kp O     &kp P &kp MINUS
+     &kp TAB    &kp A     &kp S    &kp D     &kp F     &kp G                              &kp H     &kp J     &kp K     &kp L     &kp SEMI &kp SQT
      &kp LSHIFT    &kp Z     &kp X    &kp C     &kp V     &kp B                              &kp N     &kp M     &kp COMMA &kp DOT   &kp FSLH   &kp RSHIFT
              &kp LEFT  &kp RIGHT                                                                &kp UP  &kp DOWN
-                                      &mt LGUI BSPC  &mt LCTL ESC                                 &mt RCTL ENTER     &mt RGUI SPACE
-                                                    &bootloader   &kp R   &kp J   &kp O   &kp Z   &tog CLEAN    &bootloader
+                                      &kp BSPC  &kp ESC                                 &kp ENTER     &kp SPACE
+                                                    &kp PIPE   &tog CLEAN   &kp TILDE   &kp TILDE   &kp END   &kp HOME    &kp PLUS
             >;
         };
     };
