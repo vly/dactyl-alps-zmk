@@ -22,3 +22,15 @@ west build --pristine -b nice_nano_v2 -s PATH-TO-ZMK/app -- -DSHIELD=dactyl_alps
 ```
 
 This builds the left side, do the same for the right.
+
+## Todo
+
+- Change the bottom most thumbcluster switches to the alps locking types to act as power switches (alternatively use toggle switches from Gameboy on the baseplate as the rubber feet provide enough clearance).
+- Optimise the timing for thumbcluster layer hold keys as fast typing causes accidental shortcut activations.
+- Add wheel balance weights to each side to increase the heft of the keeb. A little bit too light at the moment.
+- Change orientation of first two thumbcluster switch holes so that I can mount 1.25u keycaps.
+- Fix the bottom plate design to sit more flush with the top section (currently a bit of overhang at the edges).
+- Give more spacing around the controller holder insert point so I don't have to shave it manually.
+- Thicken the middle standoff screw point as its rather fragile currently.
+- Experiment with lowering the thumb cluster (or raising the main area) ala lime40 or the tall chonkybois. Ergonomics are ok currently but I feel lower thumbs position would feel better for me.
+
